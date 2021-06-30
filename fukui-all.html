@@ -2,8 +2,8 @@
   <title>福井高専カリキュラム - 高専オープンデータ</title>
   <link rel="stylesheet" href="./style.css">
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image"  content="https://codeforkosen.github.io/kosen-opendata/ogp.png">
-  <meta name="twitter:image" content="https://codeforkosen.github.io/kosen-opendata/ogp.png">
+  <meta property="og:image"  content="https://codeforkosen.github.io/kosen-apps/fukui.png">
+  <meta name="twitter:image" content="https://codeforkosen.github.io/kosen-apps/fukui.png">
 </head>
 <body>
   <script type="module">
@@ -11,7 +11,7 @@
   import { toJA } from "./toJA.js";
 
   window.onload = async () => {
-    const url = "./data/fukui/fukui-kosen-subject.csv";
+    const url = "https://codeforkosen.github.io/kosen-opendata/data/fukui/fukui-kosen-subject.csv";
     const csv = await CSV.fetch(url);
     const tbl = CSV.makeTable(toJA(csv));
     main.appendChild(tbl);
@@ -26,7 +26,7 @@
   <div id=main></div>
 
   <hr>
-  Data: 福井高専オープンデータ（非公式） <a href=./data/fukui/fukui-kosen-subject.csv>fukui-kosen-subject.csv</a>
+  Data: 福井高専オープンデータ（非公式） <a href=https://codeforkosen.github.io/kosen-opendata/data/fukui/fukui-kosen-subject.csv>fukui-kosen-subject.csv</a>
   App: <a href=https://fukuno.jig.jp/3039>福野泰介の一日一創</a> (<a href=https://github.com/codeforkosen/kosen-opendata/>src on GitHub</a>)<br>
   
 </body>
