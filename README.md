@@ -4,4 +4,5 @@
 
 ## apps
  
+- [高専ランキング](https://codeforkosen.github.io/kosen-apps/ranking.html)
 - [福井高専カリキュラム](https://codeforkosen.github.io/kosen-apps/fukui-all.html)
