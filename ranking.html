@@ -50,9 +50,9 @@ onload = async () => {
     h2.textContent = "低炭素ランキング (CO2排出量)";
     sec.appendChild(h2);
     const co2types = [
-      "電気起算寄宿舎(t-CO2)",
-      "化石燃料起算校舎(t-CO2)",
       "電気起算校舎(t-CO2)",
+      "化石燃料起算校舎(t-CO2)",
+      "電気起算寄宿舎(t-CO2)",
       "化石燃料起算寄宿舎(t-CO2)",
     ];
     const calcCO2 = (k) => co2types.reduce((prev, cur) => prev + parseFloat(k[cur]), 0);
