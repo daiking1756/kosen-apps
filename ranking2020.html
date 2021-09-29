@@ -1,0 +1,106 @@
+<meta charset="utf-8"><script type="module">
+import { css, h1, h2, link, add, create, style, hr } from "https://js.sabae.cc/stdom.js";
+import { CSV } from "https://js.sabae.cc/CSV.js";
+import { Num } from "https://js.sabae.cc/Num.js";
+
+onload = async () => {
+  css();
+  h1("高専ランキング2020 (高専機構55キャンパス)");
+  
+  const data = {
+    facilityarea: { url: "https://codeforkosen.github.io/kosen-opendata/data/kiko/kankyo2020/kankyo2020_facilityarea.csv" },
+    // energyinput: { url: "https://codeforkosen.github.io/kosen-opendata/data/kiko/kankyo2020/kankyo2020_energyinput.csv", },
+    co2: { url: "https://codeforkosen.github.io/kosen-opendata/data/kiko/kankyo2020/kankyo2020_co2.csv", },
+    campus: { url: "https://codeforkosen.github.io/kosen-opendata/data/kosen_campus.csv", },
+  };
+  for (const name in data) {
+    const d = data[name];
+    const json = CSV.toJSON(await CSV.fetch(d.url));
+    d.data = json.filter(d => d.事業所名 != "機構本部");
+  }
+  console.log(data);
+
+  style({
+    body: { "max-width": "90vw" },
+    section: { display: "inline-block", "font-size": "80%", "margin": "0 1em" },
+    td: { "font-size": "80%" },
+  });
+
+  const getKosenLink = (s) => {
+    const f = data.campus.data.find(c => s.indexOf(c.shortname2) >= 0);
+    return f.URL;
+  };
+
+  const addtd = (tr, s, url) => {
+    const td = create("td");
+    if (!url) {
+      td.textContent = s;
+    } else {
+      const a = create("a");
+      a.href = url;
+      a.textContent = s;
+      td.appendChild(a);
+    }
+    tr.appendChild(td);
+  };
+
+  {
+    const sec = add("section");
+    const h2 = create("h2");
+    h2.textContent = "低炭素ランキング (CO2排出量)";
+    sec.appendChild(h2);
+    const co2types = [
+      "電気起算校舎(t-CO2)",
+      "化石燃料起算校舎(t-CO2)",
+      "電気起算寄宿舎(t-CO2)",
+      "化石燃料起算寄宿舎(t-CO2)",
+    ];
+    const calcCO2 = (k) => co2types.reduce((prev, cur) => prev + parseFloat(k[cur]), 0);
+    const list = data.co2.data.sort((a, b) => {
+      return calcCO2(a) - calcCO2(b);
+    });
+    const tbl = create("table");
+    sec.appendChild(tbl);
+    for (let i = 0; i < list.length; i++) {
+      const d = list[i];
+      const tr = create("tr");
+      tbl.appendChild(tr);
+      addtd(tr, (i + 1) + "位");
+      addtd(tr, d["事業所名"], getKosenLink(d["事業所名"]));
+      addtd(tr, Num.addComma(calcCO2(d)) + "t-CO2");
+      co2types.forEach((t) => {
+        addtd(tr, t.substring(0, t.length - "(t-CO2)".length).replace("寄宿舎", "寮") + " " + Num.addComma(d[t]));
+      });
+    }
+  }
+
+  {
+    const sec = add("section");
+    const h2 = create("h2");
+    h2.textContent = "広さランキング (学校+寮)";
+    sec.appendChild(h2);
+    const calcArea = (k) => parseFloat(k["寄宿舎(㎡)"]) + parseFloat(k["校舎(㎡)"]);
+    const list = data.facilityarea.data.sort((a, b) => {
+      return calcArea(b) - calcArea(a);
+    });
+    const tbl = create("table");
+    sec.appendChild(tbl);
+    for (let i = 0; i < list.length; i++) {
+      const d = list[i];
+      const tr = create("tr");
+      tbl.appendChild(tr);
+      addtd(tr, (i + 1) + "位");
+      addtd(tr, d["事業所名"], getKosenLink(d["事業所名"]));
+      addtd(tr, Num.addComma(calcArea(d)) + "㎡");
+      addtd(tr, "校舎 " + Num.addComma(d["校舎(㎡)"]) + "㎡");
+      addtd(tr, "寮 " + Num.addComma(d["寄宿舎(㎡)"]) + "㎡");
+    }
+  }
+
+  hr();
+  link("App: 福野泰介の一日一創", "https://fukuno.jig.jp/3262");
+  link("GitHub: Code for KOSEN", "https://github.com/codeforkosen/kosen-apps/");
+  link("Data: 高専オープンデータ - 環境報告書2020オープンデータ(国立高専別エネルギー収支状況)（令和2年10月）", "https://github.com/codeforkosen/kosen-opendata/tree/main/data/kiko/kankyo2020");
+  link("Data: 高専オープンデータ - 高専キャンパス", "https://github.com/codeforkosen/kosen-opendata");
+};
+</script>
