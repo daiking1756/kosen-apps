@@ -31,15 +31,15 @@ window.drawNextKaruta = () => {
   questionText.textContent = drawnKaruta.name_ja;
   currentKaruta = drawnKaruta;
   if (data.length == 0) {
-      if(wrongCount == 0) {
-      alert("素晴らしい！君は高専博士だ！")
-      } else if (wrongCount > 1 && wrongCount < 10) {
-      alert("すごい！君は高専マニアだ！")
-      } else if (wrongCount > 11 && wrongCount < 20) {
-      alert("いいね！君は高専人だ！")
-      } else {
-      alert("お疲れ様。それぞれの高専のことを覚えてくれたかな？")
-      }
+    if(wrongCount == 0) {
+    alert("素晴らしい！君は高専博士だ！")
+    } else if (wrongCount > 1 && wrongCount < 10) {
+    alert("すごい！君は高専マニアだ！")
+    } else if (wrongCount > 11 && wrongCount < 20) {
+    alert("いいね！君は高専人だ！")
+    } else {
+    alert("お疲れ様。それぞれの高専のことを覚えてくれたかな？")
+    }
   }
 }
 
