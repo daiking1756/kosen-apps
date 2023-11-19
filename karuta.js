@@ -6,25 +6,25 @@ window.showHint = () => {
 }
 
 window.showAnswer = () => {
-  const taregetKaruta = document.getElementById(currentKaruta.id);
-  taregetKaruta.border = 10;
+  const targetKaruta = document.getElementById(currentKaruta.id);
+  targetKaruta.border = 10;
 }
 
 window.drawNextKaruta = () => {
   disableDraw = true;
   toggleBtn();
-  const drawnKaruta = data.pop()
+  const drawnKaruta = data.pop();
   questionText.textContent = drawnKaruta.name_ja;
   currentKaruta = drawnKaruta;
   if (data.length == 0) {
     if(wrongCount == 0) {
-    alert("素晴らしい！君は高専博士だ！")
+      alert("素晴らしい！君は高専博士だ！");
     } else if (wrongCount > 1 && wrongCount < 10) {
-    alert("すごい！君は高専マニアだ！")
+      alert("すごい！君は高専マニアだ！");
     } else if (wrongCount > 11 && wrongCount < 20) {
-    alert("いいね！君は高専人だ！")
+      alert("いいね！君は高専人だ！");
     } else {
-    alert("お疲れ様。それぞれの高専のことを覚えてくれたかな？")
+      alert("お疲れ様。それぞれの高専のことを覚えてくれたかな？");
     }
   }
 }
@@ -49,21 +49,23 @@ shuffle(data);
 
 for (const d of data) {
   const img = new Image();
-  img.id=d.id
+  img.id = d.id;
   img.src = d.img_emblem;
   main.appendChild(img);
   img.onclick = (event) => {
-    alert(`${d.name_ja}\n${d.name_en}\n\n校章の由来:\n${d.origin_emblem_text}\n出典:${d.origin_emblem_url}`);
-    if (currentKaruta.id == event.target.id) {
-      alert('正解です');
+    let resultMessage = `${d.name_ja}\n${d.name_en}\n\n校章の由来:\n${d.origin_emblem_text}\n出典:${d.origin_emblem_url}\n\n`;
+    if (currentKaruta.id === event.target.id) {
+      resultMessage = '正解です\n\n' + resultMessage;
       event.target.remove();
       disableDraw = false;
       toggleBtn();
     } else {
-      alert('御手付きです');
-      wrongCount ++;
+      resultMessage = '御手付きです\n\n' + resultMessage;
+      wrongCount++;
       wrongCountText.textContent = wrongCount;
     }
+
+    alert(resultMessage);
   }
 }
 
